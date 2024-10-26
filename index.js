@@ -2,6 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const productRoute = require('./routes/product.route.js');
+const userRoute = require('./routes/user.route.js');
+const authMiddleware = require('./middlewares/auth.js');
+
 const app = express();
 
 //middleware
@@ -13,10 +16,8 @@ app.get('/', (req, res) => {
     res.send('hello world');
 });
 
-app.use('/api/products', productRoute)
-
-
-
+app.use('/api/products', authMiddleware, productRoute)
+app.use('/api/user', userRoute)
 
 
 mongoose.connect(process.env.MONGO_URI)
